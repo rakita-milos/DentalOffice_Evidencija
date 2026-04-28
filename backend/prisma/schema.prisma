@@ -1,95 +1,77 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
 
 model Doctor {
-  id        Int            @id @default(autoincrement())
-  name      String         @unique
-  isActive  Boolean        @default(true)
-  createdAt DateTime       @default(now())
-  entries   ServiceEntry[]
+  id Int @id @default(autoincrement())
+  name String @unique
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  entries ServiceEntry[]
 }
 
 model ServiceCategory {
-  id        Int            @id @default(autoincrement())
-  name      String         @unique
-  isActive  Boolean        @default(true)
-  createdAt DateTime       @default(now())
-  services  Service[]
-  entries   ServiceEntry[]
+  id Int @id @default(autoincrement())
+  name String @unique
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  services Service[]
+  entries ServiceEntry[]
 }
 
 model Service {
-  id            Int                   @id @default(autoincrement())
-  categoryId    Int
-  name          String
-  currentPrice  Decimal               @default(0) @db.Decimal(12, 2)
-  isActive      Boolean               @default(true)
-  createdAt     DateTime              @default(now())
-  category      ServiceCategory       @relation(fields: [categoryId], references: [id])
-  entries       ServiceEntry[]
-  priceHistory  ServicePriceHistory[]
-
+  id Int @id @default(autoincrement())
+  name String
+  currentPrice Decimal @default(0) @db.Decimal(12,2)
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  categoryId Int
+  category ServiceCategory @relation(fields:[categoryId], references:[id])
+  entries ServiceEntry[]
+  priceHistory ServicePriceHistory[]
   @@unique([categoryId, name])
 }
 
 model ServicePriceHistory {
-  id        Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   serviceId Int
-  oldPrice  Decimal? @db.Decimal(12, 2)
-  newPrice  Decimal  @db.Decimal(12, 2)
+  oldPrice Decimal? @db.Decimal(12,2)
+  newPrice Decimal @db.Decimal(12,2)
   changedAt DateTime @default(now())
-  service   Service  @relation(fields: [serviceId], references: [id])
+  service Service @relation(fields:[serviceId], references:[id])
 }
 
 model ServiceEntry {
-  id            Int             @id @default(autoincrement())
-  entryDate     DateTime
-  doctorId      Int
-  categoryId    Int
-  serviceId     Int
-  quantity      Int             @default(1)
-  priceSnapshot Decimal         @db.Decimal(12, 2)
-  createdAt     DateTime        @default(now())
-  doctor        Doctor          @relation(fields: [doctorId], references: [id])
-  category      ServiceCategory @relation(fields: [categoryId], references: [id])
-  service       Service         @relation(fields: [serviceId], references: [id])
-
+  id Int @id @default(autoincrement())
+  entryDate DateTime
+  doctorId Int
+  categoryId Int
+  serviceId Int
+  quantity Int
+  priceSnapshot Decimal @db.Decimal(12,2)
+  createdAt DateTime @default(now())
+  doctor Doctor @relation(fields:[doctorId], references:[id])
+  category ServiceCategory @relation(fields:[categoryId], references:[id])
+  service Service @relation(fields:[serviceId], references:[id])
   @@index([entryDate])
   @@index([doctorId])
-  @@index([serviceId])
   @@index([categoryId])
+  @@index([serviceId])
 }
 
 model ExpenseCategory {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
+  id Int @id @default(autoincrement())
+  name String @unique
   expenses Expense[]
 }
 
 model Expense {
-  id          Int             @id @default(autoincrement())
+  id Int @id @default(autoincrement())
   expenseDate DateTime
-  categoryId  Int
-  vendor      String?
-  amount      Decimal         @db.Decimal(12, 2)
-  createdAt   DateTime        @default(now())
-  category    ExpenseCategory @relation(fields: [categoryId], references: [id])
-
+  categoryId Int
+  vendor String?
+  amount Decimal @db.Decimal(12,2)
+  createdAt DateTime @default(now())
+  category ExpenseCategory @relation(fields:[categoryId], references:[id])
   @@index([expenseDate])
   @@index([categoryId])
-}
-
-model UserRole {
-  id           Int      @id @default(autoincrement())
-  fullName     String
-  email        String   @unique
-  role         String
-  passwordHash String
-  createdAt    DateTime @default(now())
 }

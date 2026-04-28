@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { validateRequest } from '../middlewares/validateRequest.js';
+import { idParamSchema } from '../validators/common.schema.js';
+import { createServiceSchema, updatePriceSchema } from '../validators/service.schema.js';
+import { servicesController } from '../controllers/services.controller.js';
+export const servicesRouter = Router();
+servicesRouter.post('/', validateRequest(createServiceSchema), asyncHandler(servicesController.create));
+servicesRouter.patch('/:id/price', validateRequest(updatePriceSchema), asyncHandler(servicesController.updatePrice));
+servicesRouter.delete('/:id', validateRequest(idParamSchema), asyncHandler(servicesController.remove));

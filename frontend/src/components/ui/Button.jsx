@@ -1,0 +1,1 @@
+export function Button({ className='', children, ...props }){return <button className={`inline-flex items-center justify-center font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${className}`} {...props}>{children}</button>;}

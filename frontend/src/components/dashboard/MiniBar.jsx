@@ -1,0 +1,2 @@
+import { formatMoney } from '../../utils/money';
+export function MiniBar({ label,value,max }){const width=max?Math.max(8,Math.round((Number(value)/max)*100)):0;return <div className="space-y-2"><div className="flex items-center justify-between text-sm"><span className="font-medium text-slate-700">{label}</span><span className="text-slate-500">{formatMoney(value)}</span></div><div className="h-3 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-sky-500" style={{width:`${width}%`}}/></div></div>;}

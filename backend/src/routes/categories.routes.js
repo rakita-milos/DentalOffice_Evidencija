@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { validateRequest } from '../middlewares/validateRequest.js';
+import { idParamSchema } from '../validators/common.schema.js';
+import { createCategorySchema } from '../validators/category.schema.js';
+import { categoriesController } from '../controllers/categories.controller.js';
+export const categoriesRouter = Router();
+categoriesRouter.get('/', asyncHandler(categoriesController.list));
+categoriesRouter.post('/', validateRequest(createCategorySchema), asyncHandler(categoriesController.create));
+categoriesRouter.delete('/:id', validateRequest(idParamSchema), asyncHandler(categoriesController.remove));
