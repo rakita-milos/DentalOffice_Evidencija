@@ -49,7 +49,7 @@ export default function App() {
     if (activePage === 'Dashboard') return <DashboardPage summary={summary.data} doctorTotals={byDoctor.data} categoryTotals={byCategory.data} monthly={monthly} entries={entries.data} onGoToPage={setActivePage} />;
     if (activePage === 'Unos usluga') return <ServiceEntryPage doctors={doctors.data} categories={categories.data} entries={entries.data} onCreate={createEntry} />;
     if (activePage === 'Troškovi') return <ExpensesPage categories={expenseCategories.data} expenses={expenses.data} onCreate={createExpense} />;
-    if (activePage === 'Izveštaji') return <ReportsPage byDoctor={byDoctor.data} byMonth={byMonth.data} byCategory={byCategory.data} payroll={payroll.data} />;
+    if (activePage === 'Izveštaji') return <ReportsPage doctors={doctors.data} byDoctor={byDoctor.data} byMonth={byMonth.data} byCategory={byCategory.data} payroll={payroll.data} />;
     return <AdminPage categories={categories.data} onCreateCategory={createCategory} onCreateService={createService} onUpdatePrice={updatePrice} onDeleteCategory={deleteCategory} onDeleteService={deleteService} />;
   }
 

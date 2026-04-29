@@ -11,11 +11,20 @@ import { expensesRouter } from './routes/expenses.routes.js';
 import { reportsRouter } from './routes/reports.routes.js';
 import { notFound } from './middlewares/notFound.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+
 export const app = express();
+
 app.use(helmet());
-app.use(cors({ origin: env.frontendUrl }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || env.corsOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked origin: ${origin}`));
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(morgan('dev'));
+
 app.get('/api/health', (req, res) => res.json({ ok: true, name: 'DentalOffice API' }));
 app.use('/api/doctors', doctorsRouter);
 app.use('/api/service-categories', categoriesRouter);

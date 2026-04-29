@@ -1,1 +1,22 @@
-{"name":"dentaloffice-evidencija","private":true,"version":"2.0.0","workspaces":["backend","frontend"],"scripts":{"dev":"concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"","db:up":"docker compose up -d","db:migrate":"npm run prisma:migrate --workspace backend","db:seed":"npm run prisma:seed --workspace backend","db:studio":"npm run prisma:studio --workspace backend"},"devDependencies":{"concurrently":"^8.2.2"}}
+{
+  "name": "dentaloffice-evidencija",
+  "private": true,
+  "version": "2.0.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "db:up": "docker compose up -d",
+    "db:migrate": "npm run prisma:migrate --workspace backend",
+    "db:seed": "npm run prisma:seed --workspace backend",
+    "db:studio": "npm run prisma:studio --workspace backend",
+    "test:whitebox": "node scripts/whitebox-test.mjs",
+    "test:blackbox": "node scripts/blackbox-test.mjs",
+    "test": "npm run test:whitebox"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
