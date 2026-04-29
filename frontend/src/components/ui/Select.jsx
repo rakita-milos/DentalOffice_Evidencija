@@ -1,1 +1,7 @@
-export function Select({ value,onChange,children,className='' }){return <select value={value} onChange={(e)=>onChange(e.target.value)} className={`h-11 rounded-2xl border border-slate-200 bg-white px-4 text-sm text-slate-700 outline-none focus:border-sky-400 focus:ring-4 focus:ring-sky-100 ${className}`}>{children}</select>;}
+export function Select({ value, onChange, children, className = '' }) {
+  return (
+    <select value={value} onChange={(e) => onChange(e.target.value)} className={`input-brand ${className}`}>
+      {children}
+    </select>
+  );
+}

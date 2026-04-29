@@ -3,9 +3,87 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { ConfirmModal } from '../components/ui/ConfirmModal';
+import { Icon } from '../components/ui/Icon';
+
 export function AdminPage({ categories, onCreateCategory, onCreateService, onUpdatePrice, onDeleteCategory, onDeleteService }) {
   const [categoryForm, setCategoryForm] = useState({ name: '', serviceName: '', price: 0 });
   const [serviceForms, setServiceForms] = useState({});
   const [confirm, setConfirm] = useState(null);
-  return <div className="grid gap-6 xl:grid-cols-[1fr_420px]"><Card><div className="border-b border-slate-100 p-6"><h3 className="text-lg font-bold">Cenovnik, kategorije i usluge</h3></div><div className="p-6"><div className="mb-6 rounded-3xl border border-sky-100 bg-sky-50 p-4"><h4 className="font-bold">Dodaj novu kategoriju + prvu uslugu</h4><div className="mt-3 grid gap-3 md:grid-cols-[1fr_1fr_120px_120px]"><Input value={categoryForm.name} onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })} placeholder="Kategorija" /><Input value={categoryForm.serviceName} onChange={(e) => setCategoryForm({ ...categoryForm, serviceName: e.target.value })} placeholder="Prva usluga" /><Input type="number" value={categoryForm.price} onChange={(e) => setCategoryForm({ ...categoryForm, price: e.target.value })} /><Button onClick={() => onCreateCategory(categoryForm)} className="h-10 rounded-2xl bg-sky-600 text-white">Dodaj</Button></div></div><div className="grid gap-6">{categories.map((category) => { const sf = serviceForms[category.id] || { name: '', price: 0 }; return <div key={category.id} className="rounded-3xl border border-slate-100 bg-slate-50/60 p-4"><div className="mb-4 flex items-center justify-between"><div><p className="font-bold">{category.name}</p><p className="text-xs text-slate-500">{category.services.length} usluga</p></div><Button onClick={() => setConfirm({ title: 'Brisanje kategorije', message: `Obrisati kategoriju ${category.name}?`, action: () => onDeleteCategory(category.id) })} className="rounded-xl bg-rose-50 px-3 py-2 text-xs text-rose-700">Obriši</Button></div><div className="mb-3 grid gap-2 md:grid-cols-[1fr_110px_100px]"><Input value={sf.name} onChange={(e) => setServiceForms({ ...serviceForms, [category.id]: { ...sf, name: e.target.value } })} placeholder="Nova usluga" /><Input type="number" value={sf.price} onChange={(e) => setServiceForms({ ...serviceForms, [category.id]: { ...sf, price: e.target.value } })} /><Button onClick={() => onCreateService({ categoryId: category.id, ...sf })} className="h-10 rounded-xl bg-slate-950 text-white">Dodaj</Button></div><div className="grid gap-2 md:grid-cols-2">{category.services.map((service) => <div key={service.id} className="flex items-center justify-between gap-3 rounded-2xl bg-white px-3 py-2"><span className="truncate text-sm font-medium">{service.name}</span><div className="flex items-center gap-1"><input type="number" defaultValue={service.currentPrice} onBlur={(e) => onUpdatePrice(service.id, e.target.value)} className="h-8 w-24 rounded-xl border border-slate-200 px-2 text-right text-sm font-semibold" /><button onClick={() => setConfirm({ title: 'Brisanje usluge', message: `Obrisati uslugu ${service.name}?`, action: () => onDeleteService(service.id) })} className="rounded-lg p-1 text-rose-400">×</button></div></div>)}</div></div>; })}</div></div></Card><Card><div className="p-6"><h3 className="text-lg font-bold">Pravila</h3><div className="mt-4 space-y-3 text-sm"><p className="rounded-2xl bg-emerald-50 p-4 text-emerald-800">Cena je snapshot i ne menja istoriju.</p><p className="rounded-2xl bg-sky-50 p-4 text-sky-800">Backend blokira brisanje korišćenih stavki.</p><p className="rounded-2xl bg-amber-50 p-4 text-amber-800">Svako brisanje ima potvrdu.</p></div></div></Card><ConfirmModal open={!!confirm} title={confirm?.title} message={confirm?.message} onCancel={() => setConfirm(null)} onConfirm={async () => { await confirm.action(); setConfirm(null); }} /></div>;
+
+  return (
+    <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
+      <Card>
+        <div className="border-b border-[#EAF0F7] p-6">
+          <h3 className="text-xl font-black text-[#0D2B5C]">Cenovnik, kategorije i usluge</h3>
+          <p className="text-sm text-[#6B7280]">Admin menja cene samo za nove unose. Istorija ostaje zaključana.</p>
+        </div>
+        <div className="p-6">
+          <div className="mb-6 rounded-[24px] border border-[#CFE9FF] bg-[#EAF5FF] p-5">
+            <h4 className="font-black text-[#0D2B5C]">Dodaj novu kategoriju + prvu uslugu</h4>
+            <div className="mt-4 grid gap-3 md:grid-cols-[1fr_1fr_120px_120px]">
+              <Input value={categoryForm.name} onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })} placeholder="Kategorija" />
+              <Input value={categoryForm.serviceName} onChange={(e) => setCategoryForm({ ...categoryForm, serviceName: e.target.value })} placeholder="Prva usluga" />
+              <Input type="number" value={categoryForm.price} onChange={(e) => setCategoryForm({ ...categoryForm, price: e.target.value })} className="text-right" />
+              <Button onClick={() => onCreateCategory(categoryForm)}><Icon name="plus" size={16} /> Dodaj</Button>
+            </div>
+          </div>
+
+          <div className="grid gap-6">
+            {categories.map((category) => {
+              const sf = serviceForms[category.id] || { name: '', price: 0 };
+              return (
+                <div key={category.id} className="rounded-[24px] border border-[#E5EDF7] bg-[#F8FBFF] p-5">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <div>
+                      <p className="text-lg font-black text-[#0D2B5C]">{category.name}</p>
+                      <p className="text-xs font-semibold text-[#6B7280]">{category.services.length} usluga u kategoriji</p>
+                    </div>
+                    <Button variant="danger" onClick={() => setConfirm({ title: 'Brisanje kategorije', message: `Da li ste sigurni da želite da obrišete kategoriju ${category.name}?`, action: () => onDeleteCategory(category.id) })}>Obriši</Button>
+                  </div>
+
+                  <div className="mb-4 grid gap-2 md:grid-cols-[1fr_110px_100px]">
+                    <Input value={sf.name} onChange={(e) => setServiceForms({ ...serviceForms, [category.id]: { ...sf, name: e.target.value } })} placeholder="Nova usluga" className="h-9 rounded-xl" />
+                    <Input type="number" value={sf.price} onChange={(e) => setServiceForms({ ...serviceForms, [category.id]: { ...sf, price: e.target.value } })} className="h-9 rounded-xl text-right" />
+                    <Button variant="dark" onClick={() => onCreateService({ categoryId: category.id, ...sf })} className="h-9 rounded-xl">Dodaj</Button>
+                  </div>
+
+                  <div className="grid gap-2 md:grid-cols-2">
+                    {category.services.map((service) => (
+                      <div key={service.id} className="flex min-h-12 items-center justify-between gap-3 rounded-2xl bg-white px-3 py-2 shadow-sm shadow-blue-900/5">
+                        <span className="min-w-0 flex-1 truncate text-sm font-bold text-[#0D2B5C]">{service.name}</span>
+                        <div className="flex items-center gap-1">
+                          <input type="number" defaultValue={service.currentPrice} onBlur={(e) => onUpdatePrice(service.id, e.target.value)} className="h-8 w-24 rounded-xl border border-[#DCE7F3] px-2 text-right text-sm font-bold text-[#0D2B5C] outline-none focus:border-[#64B5F6]" />
+                          <span className="text-[11px] font-black text-[#6B7280]">RSD</span>
+                          <button onClick={() => setConfirm({ title: 'Brisanje usluge', message: `Da li ste sigurni da želite da obrišete uslugu ${service.name}?`, action: () => onDeleteService(service.id) })} className="ml-1 rounded-lg p-1 text-rose-500 hover:bg-rose-50"><Icon name="trash" size={15} /></button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Card>
+
+      <div className="space-y-6">
+        <Card className="p-6">
+          <h3 className="text-xl font-black text-[#0D2B5C]">Pravila Admin dela</h3>
+          <div className="mt-5 space-y-3 text-sm font-semibold">
+            <div className="status-success rounded-2xl p-4"><b>Cena je snapshot</b><p>Nove cene važe samo za nove unose.</p></div>
+            <div className="status-info rounded-2xl p-4"><b>Korišćeno se ne briše</b><p>Backend blokira kategorije i usluge sa istorijom.</p></div>
+            <div className="status-warning rounded-2xl p-4"><b>Svako brisanje ima potvrdu</b><p>Pre delete akcije dobija se popup.</p></div>
+          </div>
+        </Card>
+        <Card className="p-6">
+          <h3 className="text-xl font-black text-[#0D2B5C]">Brand identity</h3>
+          <div className="mt-5 grid grid-cols-5 gap-3">
+            {['#1E88E5', '#64B5F6', '#0D47A1', '#4CAF50', '#26C6DA'].map((color) => <div key={color}><div className="h-14 rounded-2xl" style={{ background: color }} /><p className="mt-2 text-[11px] font-bold text-[#6B7280]">{color}</p></div>)}
+          </div>
+        </Card>
+      </div>
+
+      <ConfirmModal open={!!confirm} title={confirm?.title} message={confirm?.message} onCancel={() => setConfirm(null)} onConfirm={async () => { await confirm.action(); setConfirm(null); }} />
+    </div>
+  );
 }

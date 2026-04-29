@@ -1,4 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+:root{
+  --brand-blue:#1E88E5;
+  --brand-light-blue:#64B5F6;
+  --brand-dark-blue:#0D47A1;
+  --brand-green:#4CAF50;
+  --brand-teal:#26C6DA;
+  --brand-bg:#F5F7FA;
+  --brand-text:#1F2937;
+  --brand-muted:#6B7280;
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--brand-bg);color:var(--brand-text)}
+button,input,select{font:inherit}
+
+.app-shell{min-height:100vh;background:linear-gradient(180deg,#ffffff 0%,#f5f7fa 45%,#eef6ff 100%)}
+.sidebar{background:rgba(255,255,255,.96);border-right:1px solid #E5EDF7;box-shadow:0 20px 60px rgba(13,71,161,.08)}
+.sidebar-logo{width:210px;height:auto;object-fit:contain}
+.nav-item{color:#0D2B5C}
+.nav-item-active{background:linear-gradient(135deg,var(--brand-blue),#0877d8);color:#fff;box-shadow:0 14px 28px rgba(30,136,229,.25)}
+.topbar{background:rgba(255,255,255,.84);border-bottom:1px solid #E5EDF7;backdrop-filter:blur(18px)}
+.card-premium{background:rgba(255,255,255,.94);border:1px solid #E5EDF7;box-shadow:0 18px 45px rgba(13,71,161,.08);border-radius:22px}
+.soft-card{background:#fff;border:1px solid #E5EDF7;box-shadow:0 8px 24px rgba(13,71,161,.06);border-radius:18px}
+.brand-gradient{background:linear-gradient(135deg,var(--brand-blue),#0077dd)}
+.icon-tile{background:linear-gradient(135deg,#E3F2FD,#F5FBFF);color:var(--brand-blue)}
+.input-brand{height:44px;border-radius:14px;border:1px solid #DCE7F3;background:#fff;padding:0 14px;color:#0D2B5C;outline:none;transition:.2s}
+.input-brand:focus{border-color:var(--brand-light-blue);box-shadow:0 0 0 4px rgba(100,181,246,.22)}
+.table-brand th{background:#F8FBFF;color:#0D2B5C;font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:800}
+.table-brand td,.table-brand th{padding:14px 16px;border-bottom:1px solid #EAF0F7}
+.status-success{background:#EAF7EF;color:#1B7A36;border:1px solid #CFEED8}
+.status-info{background:#EAF5FF;color:#0D63B0;border:1px solid #D4EAFE}
+.status-warning{background:#FFF7E8;color:#A56200;border:1px solid #FFE4B5}
+.status-error{background:#FFF0F0;color:#B42318;border:1px solid #FFD3D3}
+.square-preview{width:100%;max-width:1180px;aspect-ratio:1/1;margin:0 auto;overflow:auto;background:#fff;border:1px solid #E5EDF7;border-radius:28px;box-shadow:0 30px 90px rgba(13,71,161,.12)}
+@media (max-width:1024px){.square-preview{aspect-ratio:auto;max-width:none;border-radius:0;border:0;box-shadow:none}}

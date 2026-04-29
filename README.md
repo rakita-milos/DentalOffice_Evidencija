@@ -27,3 +27,15 @@ Backend: http://localhost:4000/api/health
 - Istorija se ne menja retroaktivno.
 - Korišćena kategorija/usluga ne može da se obriše.
 - Brisanje ide preko confirm popup-a i backend provere.
+
+## Rebranding dr Rosa Bašić
+
+Frontend je redizajniran prema brand identitetu ordinacije:
+- Primary Blue `#1E88E5`
+- Light Blue `#64B5F6`
+- Dark Blue `#0D47A1`
+- Soft Green `#4CAF50`
+- Light Teal `#26C6DA`
+- neutralna medicinska pozadina `#F5F7FA`
+
+Logo aplikacije se nalazi u `frontend/public/brand/dr-rosa-basic-logo.png`.
